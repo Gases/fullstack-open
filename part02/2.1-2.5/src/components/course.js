@@ -40,7 +40,6 @@ const Course = ({ courses }) => {
     <div>
       {courses.map(course => 
         <div>
-          <h1>Web development curriculum</h1>
           <Header course={course.name}/>
           <Content parts={course.parts}/>
           <Total parts={course.parts} />
