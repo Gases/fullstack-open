@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import Numbers from "./components/Numbers";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
+import Notification from "./components/Notification";
 import personService from "./service/people";
-import './styles.css'
+import "./styles.css";
 
 const App = () => {
   function checkEmpty(newPerson) {
@@ -15,7 +16,11 @@ const App = () => {
 
   function editPerson(newPerson) {
     if (persons.some((person) => person.name === newPerson.name)) {
-      if (window.confirm(`Doing this will change de entry for ${newPerson.name}. Are you sure you want to proceed?`)) {
+      if (
+        window.confirm(
+          `Doing this will change de entry for ${newPerson.name}. Are you sure you want to proceed?`
+        )
+      ) {
         const person = persons.find((p) => p.name === newPerson.name);
         const changeNumber = { ...person, number: newPerson.number };
 
@@ -27,11 +32,25 @@ const App = () => {
                 person.name !== changedPerson.name ? person : changedPerson
               )
             );
+          })
+          .catch(() => {
+            setMessage(
+              `Information for ${newPerson.name} has already been removed from the server`
+            );
+            setType("fail");
+            setTimeout(() => {
+              setMessage(null);
+            }, 1500);
           });
-        }
+      }
     } else {
       personService.addPerson(newPerson).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
+        setMessage(`Added ${returnedPerson.name}`);
+        setType("success");
+        setTimeout(() => {
+          setMessage(null);
+        }, 1500);
       });
     }
   }
@@ -41,6 +60,8 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [message, setMessage] = useState(null);
+  const [type, setType] = useState("");
 
   useEffect(() => {
     personService.allPeople().then((initialPeople) => {
@@ -55,7 +76,7 @@ const App = () => {
     const newPerson = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1,
+      id: persons.length * (Math.random() * 100),
     };
 
     checkEmpty(newPerson)
@@ -68,13 +89,11 @@ const App = () => {
 
   const deletePerson = (id) => {
     if (window.confirm(`Do you really want to delete this entry?`)) {
-      personService
-        .deletePerson(id)
-        .then(() => {
-          setPersons(persons.filter(person => person.id !== id));
-        });
+      personService.deletePerson(id).then(() => {
+        setPersons(persons.filter((person) => person.id !== id));
+      });
     }
-  }
+  };
 
   const handleNameChange = (event) => {
     setNewName(event.target.value);
@@ -95,6 +114,7 @@ const App = () => {
       <Filter filterChange={handleFilterChange} />
       <br />
       <h3>Add a new person</h3>
+      <Notification message={message} type={type} />
       <PersonForm
         addNewPerson={addPerson}
         name={newName}
@@ -107,10 +127,10 @@ const App = () => {
       {persons
         .filter((person) => person.name.includes(filter))
         .map((person) => (
-          <Numbers 
+          <Numbers
             key={person.id}
-            name={person.name} 
-            number={person.number} 
+            name={person.name}
+            number={person.number}
             deletePerson={() => deletePerson(person.id)}
           />
         ))}
