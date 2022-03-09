@@ -1,0 +1,19 @@
+{
+  "name": "part03",
+  "version": "1.0.0",
+  "description": "Exercises for part 03 of the Fullstack Open curriculum.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "author": "Alejandro Arias Martijena",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
