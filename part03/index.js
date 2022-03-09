@@ -62,6 +62,17 @@ app.delete('/api/persons/:id', (req, res) => {
 app.post('/api/persons', (req, res) => {
   const id = (Math.random() * 1000000).toFixed(0);
   const body = req.body;
+
+  if (!body.name || !body.number) {
+    return res.status(400).json({
+      error: 'missing information'
+    });
+  } else if (persons.some(p => p.name === body.name)) {
+    return res.status(400).json({
+      error: 'name already exists'
+    });
+  }
+
   const person = {
     name: body.name,
     number: body.number,
