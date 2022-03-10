@@ -4,7 +4,20 @@ const app = express();
 const PORT = 3001;
 
 app.use(express.json());
-app.use(morgan('tiny'));
+
+morgan.token('body', (req, res) => {
+  if (req.method === 'POST') {
+    return [
+      JSON.stringify(req.body)
+    ]
+  }
+});
+
+// function isNotPost(req, res) {
+//   return (req.method !== 'POST')
+// };
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
 
 let persons = [
   { 
