@@ -19,7 +19,7 @@ const App = () => {
         `Doing this will change de entry for ${newPerson.name}. Are you sure you want to proceed?`
       )
     ) {
-      const person = persons.find((p) => p.name === newPerson.name);
+       const person = persons.find((p) => p.name === newPerson.name);
       const changeNumber = { ...person, number: newPerson.number };
 
       personService
@@ -76,7 +76,6 @@ const App = () => {
           .then((returnedPerson) => {
             // returnedPerson = [new Set(returnedPerson)];
             setPersons(persons.concat(returnedPerson));
-            setNewName("");
             setMessage(`Added ${returnedPerson.name}`);
             setType("success");
             setTimeout(() => {
