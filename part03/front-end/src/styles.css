@@ -1,0 +1,24 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.notification.success {
+  color: green;
+  background: lightgrey;
+  font: 15px;
+  padding: 5px;
+  margin-bottom: 10px;
+  border: solid green 3px;
+  border-radius: 3px;
+}
+
+.notification.fail {
+  color: red;
+  background: lightgrey;
+  font: 15px;
+  padding: 5px;
+  margin-bottom: 10px;
+  border: solid red 3px;
+  border-radius: 3px;
+}
